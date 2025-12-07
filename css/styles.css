@@ -67,7 +67,20 @@ body {
 }
 
 /* =========================================
-   5. LÓGICA DE APERTURA/CIERRE
+   5. AJUSTE FINO DEL FOOTER
+   ========================================= */
+footer {
+    width: auto; /* Dejar que se adapte solo */
+    position: relative;
+    padding: 1rem 0;
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    /* Aseguramos que no flote ni se salga */
+    display: block; 
+}
+
+/* =========================================
+   6. LÓGICA DE APERTURA/CIERRE
    ========================================= */
 
 /* --- EN PC (>= 768px) --- */
