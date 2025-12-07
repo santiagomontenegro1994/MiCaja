@@ -1,5 +1,5 @@
 /* =========================================
-   1. VARIABLES
+   1. VARIABLES Y BASE
    ========================================= */
 :root {
     --sidebar-width: 250px;
@@ -12,103 +12,85 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-light);
-    overflow-x: hidden;
+    overflow-x: hidden; /* Seguridad extra */
 }
 
 /* =========================================
-   2. NAVBAR (Barra Superior)
-   ========================================= */
-.navbar {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: var(--topbar-height);
-    background-color: #fff;
-    border-bottom: 1px solid #dee2e6;
-    z-index: 1050;
-    padding: 0 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* =========================================
-   3. SIDEBAR (Menú Lateral)
+   2. SIDEBAR (Fijo a la izquierda)
    ========================================= */
 #sidebar-wrapper {
     width: var(--sidebar-width);
     height: 100vh;
-    position: fixed;
-    top: var(--topbar-height);
+    position: fixed; /* Siempre visible en su carril */
+    top: 0;
     left: 0;
     background-color: var(--primary-color);
     color: #fff;
-    z-index: 1040;
+    z-index: 1000;
+    transition: margin-left 0.3s ease-in-out;
     overflow-y: auto;
-    border-right: 1px solid rgba(0,0,0,0.1);
-    transition: transform 0.3s ease-in-out;
 }
 
-/* Estilos internos */
-.sidebar-heading { padding: 1.2rem; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.list-group-item { background: transparent; color: #bdc3c7; border: none; padding: 12px 20px; border-left: 4px solid transparent; }
-.list-group-item:hover { background: rgba(255,255,255,0.05); color: #fff; border-left-color: var(--accent-color); }
-.list-group-item.active { background: var(--accent-color); color: #fff; border-left-color: #fff; }
-.sidebar-divider { font-size: 0.75rem; text-transform: uppercase; color: #95a5a6; padding: 20px 20px 5px; font-weight: bold; }
+.sidebar-heading { padding: 1.2rem; font-weight: bold; background: rgba(0,0,0,0.2); text-align: center; }
+.list-group-item { background: transparent; color: #bdc3c7; border: none; padding: 12px 20px; }
+.list-group-item:hover { background: rgba(255,255,255,0.05); color: #fff; border-left: 4px solid var(--accent-color); }
+.list-group-item.active { background: var(--accent-color); color: #fff; }
 
 /* =========================================
-   4. CONTENIDO (Corrección de Ancho)
+   3. CONTENEDOR MAESTRO (Nav + Content + Footer)
    ========================================= */
 #page-content-wrapper {
-    width: 100%; /* Por defecto en móvil ocupa todo */
-    padding-top: var(--topbar-height);
-    transition: all 0.3s ease-in-out; /* Animamos margen y ancho */
+    /* CORRECCIÓN VITAL: No usamos width: 100% */
+    width: auto; 
+    /* El margen define el ancho real disponible */
+    margin-left: var(--sidebar-width); 
     
-    /* Para que el footer se quede abajo siempre */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    transition: margin-left 0.3s ease-in-out;
 }
 
 /* =========================================
-   5. LÓGICA RESPONSIVA (EL ARREGLO)
+   4. NAVBAR (STICKY)
+   ========================================= */
+/* Al usar sticky, el Nav se queda pegado arriba pero RESPETA el ancho del padre */
+.navbar {
+    position: sticky; 
+    top: 0;
+    z-index: 900;
+    height: var(--topbar-height);
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0 15px;
+    width: 100%; /* Ocupa el 100% de su padre (el wrapper), no de la pantalla */
+}
+
+/* =========================================
+   5. LÓGICA DE APERTURA/CIERRE
    ========================================= */
 
 /* --- EN PC (>= 768px) --- */
 @media (min-width: 768px) {
-    
-    /* ESTADO ABIERTO (Normal): Restamos el ancho del menú */
-    #sidebar-wrapper { 
-        transform: translateX(0); 
-    }
-    #page-content-wrapper { 
-        margin-left: var(--sidebar-width); 
-        /* AQUÍ ESTÁ LA SOLUCIÓN: Ancho = 100% - 250px */
-        width: calc(100% - var(--sidebar-width)); 
-    }
+    /* Estado NORMAL (Abierto): Wrapper empujado 250px */
+    #sidebar-wrapper { margin-left: 0; }
+    #page-content-wrapper { margin-left: var(--sidebar-width); }
 
-    /* ESTADO CERRADO (Toggled): Ocupa todo el ancho */
-    body.sb-sidenav-toggled #sidebar-wrapper {
-        transform: translateX(-100%) !important;
-    }
-    body.sb-sidenav-toggled #page-content-wrapper {
-        margin-left: 0 !important;
-        width: 100% !important; /* Vuelve a ocupar todo */
-    }
+    /* Estado CERRADO: Wrapper ocupa todo (margen 0) */
+    body.sb-sidenav-toggled #sidebar-wrapper { margin-left: calc(-1 * var(--sidebar-width)); }
+    body.sb-sidenav-toggled #page-content-wrapper { margin-left: 0; }
 }
 
 /* --- EN MÓVIL (< 768px) --- */
 @media (max-width: 768px) {
-    
-    #sidebar-wrapper { transform: translateX(-100%); }
-    #page-content-wrapper { margin-left: 0; width: 100%; }
+    /* Estado NORMAL (Cerrado): Sidebar escondido */
+    #sidebar-wrapper { margin-left: calc(-1 * var(--sidebar-width)); }
+    #page-content-wrapper { margin-left: 0; }
 
-    body.sb-sidenav-toggled #sidebar-wrapper {
-        transform: translateX(0) !important;
-        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-    }
-    
+    /* Estado ABIERTO: Sidebar sale, Overlay en contenido */
+    body.sb-sidenav-toggled #sidebar-wrapper { margin-left: 0; }
     body.sb-sidenav-toggled::before {
-        content: ""; position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.5); z-index: 1030;
+        content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 999;
     }
 }

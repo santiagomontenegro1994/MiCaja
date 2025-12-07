@@ -1,34 +1,37 @@
 <?php
 // 1. CONFIGURACIÓN Y SEGURIDAD
 require_once '../../config/db.php';
-// session_start(); // Descomentar cuando tengas el login activo
+
+// (Opcional) Verificación de sesión
+// session_start();
 // if (!isset($_SESSION['user_id'])) { header('Location: ' . BASE_URL . 'index.php'); exit; }
 
-// 2. SIMULACIÓN DE DATOS (Aquí irán tus consultas SQL reales luego)
-// -------------------------------------------------------------------
-$caja_abierta = true; // true o false según base de datos
+// 2. SIMULACIÓN DE DATOS (Reemplazar con tus consultas SQL reales)
+$caja_abierta = true; 
 $total_ventas_hoy = 45200;
 $cantidad_tickets = 12;
 $deuda_clientes = 128500;
-$stock_bajo = 5; // Cantidad de productos con poco stock
+$stock_bajo = 5; 
 
-// Listado simulado de últimos movimientos
 $ultimos_movimientos = [
     ['hora' => '10:30', 'tipo' => 'Venta', 'desc' => 'Ticket #0015', 'monto' => 1500, 'icono' => 'fa-shopping-cart', 'color' => 'success'],
     ['hora' => '10:45', 'tipo' => 'Gasto', 'desc' => 'Pago Proveedor', 'monto' => -5000, 'icono' => 'fa-money-bill', 'color' => 'danger'],
     ['hora' => '11:10', 'tipo' => 'Cobro', 'desc' => 'Pago Cta. Cte.', 'monto' => 3200, 'icono' => 'fa-hand-holding-usd', 'color' => 'primary'],
 ];
 
-// 3. INCLUDES VISUALES
+// 3. ESTRUCTURA DE LA PÁGINA
+// A. Header (Abre HTML y Body)
 include '../../includes/header.php';
-include '../../includes/sidebar.php';
+
+// B. Sidebar (Menú lateral fijo a la izquierda)
+include '../../includes/sidebar.php'; 
 ?>
 
 <div id="page-content-wrapper">
-    
+
     <?php include '../../includes/topbar.php'; ?>
 
-    <div class="container-fluid py-4 px-4 flex-grow-1">
+    <div class="container-fluid px-4 py-4 flex-grow-1">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -53,9 +56,9 @@ include '../../includes/sidebar.php';
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.8rem;">Ventas Hoy</p>
+                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size:0.8rem;">Ventas Hoy</p>
                                 <h4 class="mb-0 fw-bold text-success">$ <?= number_format($total_ventas_hoy, 0, ',', '.') ?></h4>
-                                <small class="text-muted"><?= $cantidad_tickets ?> Tickets emitidos</small>
+                                <small class="text-muted"><?= $cantidad_tickets ?> Tickets</small>
                             </div>
                             <div class="bg-success bg-opacity-10 p-3 rounded">
                                 <i class="fas fa-dollar-sign fa-2x text-success"></i>
@@ -70,9 +73,9 @@ include '../../includes/sidebar.php';
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.8rem;">A cobrar (Cta Cte)</p>
+                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size:0.8rem;">A cobrar</p>
                                 <h4 class="mb-0 fw-bold text-dark">$ <?= number_format($deuda_clientes, 0, ',', '.') ?></h4>
-                                <small class="text-warning fw-bold">Ver deudores <i class="fas fa-arrow-right"></i></small>
+                                <small class="text-warning fw-bold">Ver deudores</small>
                             </div>
                             <div class="bg-warning bg-opacity-10 p-3 rounded">
                                 <i class="fas fa-user-clock fa-2x text-warning"></i>
@@ -87,9 +90,9 @@ include '../../includes/sidebar.php';
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.8rem;">Stock Crítico</p>
+                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size:0.8rem;">Stock Crítico</p>
                                 <h4 class="mb-0 fw-bold text-danger"><?= $stock_bajo ?></h4>
-                                <small class="text-muted">Productos por agotar</small>
+                                <small class="text-muted">Productos</small>
                             </div>
                             <div class="bg-danger bg-opacity-10 p-3 rounded">
                                 <i class="fas fa-box-open fa-2x text-danger"></i>
@@ -104,9 +107,9 @@ include '../../includes/sidebar.php';
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.8rem;">Caja Mensual</p>
-                                <h4 class="mb-0 fw-bold text-primary">Ver Historial</h4>
-                                <small class="text-muted">Reportes detallados</small>
+                                <p class="text-muted mb-1 text-uppercase fw-bold" style="font-size:0.8rem;">Reportes</p>
+                                <h4 class="mb-0 fw-bold text-primary">Historial</h4>
+                                <small class="text-muted">Ver detalles</small>
                             </div>
                             <div class="bg-primary bg-opacity-10 p-3 rounded">
                                 <i class="fas fa-chart-line fa-2x text-primary"></i>
@@ -120,7 +123,6 @@ include '../../includes/sidebar.php';
         <div class="row g-4 mb-4">
             
             <div class="col-lg-8">
-                
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-body">
                         <h5 class="card-title text-muted mb-3">Accesos Rápidos</h5>
@@ -129,10 +131,10 @@ include '../../includes/sidebar.php';
                                 <i class="fas fa-shopping-cart me-2"></i> Nueva Venta
                             </a>
                             <a href="<?= BASE_URL ?>modules/productos/nuevo.php" class="btn btn-outline-secondary flex-grow-1">
-                                <i class="fas fa-plus me-2"></i> Agregar Producto
+                                <i class="fas fa-plus me-2"></i> Producto
                             </a>
                             <a href="<?= BASE_URL ?>modules/caja/movimientos.php" class="btn btn-outline-secondary flex-grow-1">
-                                <i class="fas fa-exchange-alt me-2"></i> Ingreso/Egreso
+                                <i class="fas fa-exchange-alt me-2"></i> Caja
                             </a>
                         </div>
                     </div>
@@ -156,10 +158,9 @@ include '../../includes/sidebar.php';
                     </div>
                     <div class="card-body p-0">
                         <div class="list-group list-group-flush">
-                            
                             <?php foreach($ultimos_movimientos as $mov): ?>
                             <div class="list-group-item d-flex align-items-center p-3 border-bottom-0">
-                                <div class="bg-<?= $mov['color'] ?> bg-opacity-10 p-2 rounded-circle me-3" style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                                <div class="bg-<?= $mov['color'] ?> bg-opacity-10 p-2 rounded-circle me-3" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
                                     <i class="fas <?= $mov['icono'] ?> text-<?= $mov['color'] ?>"></i>
                                 </div>
                                 <div class="flex-grow-1">
@@ -174,81 +175,36 @@ include '../../includes/sidebar.php';
                                 </div>
                             </div>
                             <?php endforeach; ?>
-
                         </div>
                     </div>
-                    <div class="card-footer bg-white border-0 text-center py-3">
-                        <small class="text-muted">Actualizado hace 2 minutos</small>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-danger text-white">
-                <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> Alerta: Productos Bajos de Stock</h6>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Producto</th>
-                                <th>Categoría</th>
-                                <th class="text-center">Stock Actual</th>
-                                <th class="text-center">Stock Mínimo</th>
-                                <th class="text-end">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Coca Cola 2.25L</td>
-                                <td>Bebidas</td>
-                                <td class="text-center fw-bold text-danger">2</td>
-                                <td class="text-center text-muted">10</td>
-                                <td class="text-end"><button class="btn btn-sm btn-primary">Reponer</button></td>
-                            </tr>
-                            <tr>
-                                <td>Harina 0000 1kg</td>
-                                <td>Almacén</td>
-                                <td class="text-center fw-bold text-danger">4</td>
-                                <td class="text-center text-muted">15</td>
-                                <td class="text-end"><button class="btn btn-sm btn-primary">Reponer</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div> </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Configuración del Gráfico de Ventas
-    const ctx = document.getElementById('ventasChart').getContext('2d');
-    const ventasChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
-            datasets: [{
-                label: 'Ventas ($)',
-                data: [12000, 19000, 3000, 5000, 20000, 30000, 45000],
-                borderColor: '#3498db',
-                backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4 // Curva suave
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false }
+    </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('ventasChart').getContext('2d');
+        const ventasChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: [12000, 19000, 3000, 5000, 20000, 30000, 45000],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
             },
-            scales: {
-                y: { beginAtZero: true }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Importante para que se adapte bien
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
             }
-        }
-    });
-</script>
+        });
+    </script>
 
 <?php include '../../includes/footer.php'; ?>
